@@ -1,10 +1,10 @@
 Menu_troca_rede:
 
-- Conectar automaticamente em uma rede pré-selecionada com maior prioridade
-- Mostrar nome da Rede + IP atualmente conectada
-- Listar redes disponiveis para conexão
-- Conectar em uma rede selecionada na lista
-- Desligar a Raspberry
+- Conecta automaticamente em uma rede pré-selecionada com maior prioridade
+- Mostra nome da Rede + IP atualmente conectada
+- Lista redes disponiveis para conexão
+- Conecta em uma rede selecionada na lista
+- Desliga a Raspberry
 
 
 
