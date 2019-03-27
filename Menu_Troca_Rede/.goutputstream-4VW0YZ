@@ -1,0 +1,175 @@
+#!/usr/bin/python
+# -*- coding: latin-1 -*-
+import os, sys
+import math
+import time
+import Adafruit_GPIO.SPI as SPI
+import Adafruit_SSD1306
+from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw
+import subprocess
+import RPi.GPIO as GPIO
+from luma.core.render import canvas
+from time import sleep
+import socket
+from luma.oled.device import ssd1306, ssd1325, ssd1331, sh1106
+from luma.core.interface.serial import i2c
+
+
+serial = i2c(port=1, address=0x3C)
+device = ssd1306(serial, rotate=0)
+global gdraw, gdevice
+
+
+
+gpio_pin_down = 27
+gpio_pin_up = 17
+gpio_pin_left = 22
+gpio_pin_right = 23
+
+
+# Botao
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(gpio_pin_down, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(gpio_pin_up, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(gpio_pin_left, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(gpio_pin_right, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+# Definições das variáveis
+endereco = "ERROR"
+rede = "nao conectada"
+RST = 24
+DC = 23
+SPI_PORT = 0
+SPI_DEVICE = 0
+padding = 2
+shape_width = 20
+
+# Configuração inicial
+disp = Adafruit_SSD1306.SSD1306_128_64(rst=RST)
+disp.begin()
+disp.clear()
+disp.display()
+width = disp.width
+height = disp.height
+image = Image.new('1', (width, height))
+top = padding
+emy=top
+bottom = height-padding
+x = padding
+font = ImageFont.load_default()
+draw = ImageDraw.Draw(image)
+global menuindex
+global insubmenu
+
+
+#fontes
+font_small = ImageFont.truetype('/home/pi/fonts/OpenSans-Regular.ttf', 16)
+font = ImageFont.truetype('/home/pi/fonts/OpenSans-ExtraBoldItalic.ttf', 14)
+font14 = ImageFont.truetype('/home/pi/fonts/OpenSans-Regular.ttf', 16)
+
+
+
+
+def invert(draw,x,y,text):
+    font = ImageFont.load_default()
+    draw.rectangle((x, y, x+120, y+10), outline=255, fill=255)
+    draw.text((x, y), text, font=font, outline=0,fill="black")
+
+# Box and text rendered in portrait mode
+def menu(device, draw, menustr,index):
+    global menuindex
+    font = ImageFont.load_default()
+    draw.rectangle(device.bounding_box, outline="white", fill="black")
+    for i in range(len(menustr)):
+        if(i == index):
+            menuindex = i
+            invert(draw, 2, i*10, menustr[i])
+
+        else:
+            draw.text((2, i*10), menustr[i], font=font, fill=255)
+
+
+names = ['Asimov1', 'Asimov3', 'Asimov5', 'Asimov7', 'Asimov9', 'Asimov11','Insper_Linux']
+with canvas(device) as draw:
+    menu(device, draw, names,1)
+
+def menu_operation(strval):
+    if ( strval == "CODELECTRON"):
+        with canvas(device) as draw:
+            draw.rectangle(device.bounding_box, outline="white", fill="black")
+            draw.text((10, 20), "Thank you", fill="white")
+            draw.text((10, 30), "Keep following", fill="white")
+    if ( strval == "Asimov1"):
+        with canvas(device) as draw:
+            draw.text((0, 26), "Rede Asimov1", fill="white")
+    if ( strval == "Asimov3"):
+        with canvas(device) as draw:
+            draw.text((0, 26), "Rede Asimov3", fill="white")
+    if ( strval == "Asimov5"):
+        with canvas(device) as draw:
+            draw.text((0, 26), "Rede Asimov5", fill="white")
+    if ( strval == "Asimov7"):
+        with canvas(device) as draw:
+            draw.text((0, 26), "Rede Asimov7", fill="white")
+    if ( strval == "Asimov9"):
+        with canvas(device) as draw:
+            draw.text((0, 26), "Rede Asimov9", fill="white")
+    if ( strval == "Asimov11"):
+        with canvas(device) as draw:
+            draw.text((0, 26), "Rede Asimov11", fill="white")
+    if ( strval == "Insper_Linux"):
+        with canvas(device) as draw:
+            draw.text((0, 26), "Insper_Linux", fill="white")
+def menu_up(channel):  
+    global menuindex
+    global insubmenu
+
+    strval = names[menuindex]
+    menu_operation(strval)
+
+
+
+
+def menu_right(channel):  
+    global counter
+    print(counter)
+    try:
+        counter += 1
+        print (counter)
+        with canvas(device) as draw:
+            menu(device, draw, names,counter%7)
+    finally:
+                print ("Ending")
+
+def menu_left(channel):
+    global counter
+    print(counter)
+    try:
+        counter-= 1
+        print (counter)
+        with canvas(device) as draw:
+            menu(device,draw,names,counter%7)
+        
+
+    finally:
+                 print("Show")
+
+
+
+
+
+
+
+counter = 0
+insubmenu = 0
+
+GPIO.add_event_detect(gpio_pin_up, GPIO.FALLING, callback = menu_up,bouncetime=300)
+#GPIO.add_event_detect(gpio_pin_down, GPIO.FALLING, callback = menu_down,bouncetime=300)
+GPIO.add_event_detect(gpio_pin_left, GPIO.FALLING, callback = menu_left,bouncetime=300)
+GPIO.add_event_detect(gpio_pin_right, GPIO.FALLING, callback = menu_right,bouncetime=300)
+
+
+raw_input("Enter anything")
+GPIO.cleanup()
