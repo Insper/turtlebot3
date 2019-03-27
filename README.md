@@ -6,8 +6,13 @@ Menu_troca_rede:
 - Conecta em uma rede selecionada na lista
 - Desliga a Raspberry
 
-
-
 Bumper:
 
 - Sensor fim de curso integrado ao ROS via Raspberry
+
+Trocando de Rede
+https://www.youtube.com/watch?v=bGi5jZc8NPE&feature=youtu.be
+
+
+Desligando o Robô
+https://www.youtube.com/watch?v=MMxhFo8dfZQ&feature=youtu.be
