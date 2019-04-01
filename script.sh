@@ -1,5 +1,5 @@
 git checkout master
-git pull
+git push
 sudo apt-get update
 sudo apt autoclean
 echo "finish update"
