@@ -282,7 +282,7 @@ while True:
                                         p4=55
                                         linha4="                       "
                                         linha1="CONNECTING IN      "   
-                                        linha2="   {}".format(Asimov)
+                                        linha2="   {} =3".format(Asimov)
                                         linha3="                       "
                                         font1=font
                                         font2=font14
