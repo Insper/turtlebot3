@@ -1,5 +1,5 @@
 git checkout master
-git push
+git pull
 sudo apt-get update
 sudo apt autoclean
 
