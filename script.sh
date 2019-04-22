@@ -1,6 +1,6 @@
 #!/bin/sh
 git checkout master
-git pull
+git pull origin master
 sudo apt-get update
 sudo apt autoclean
 
