@@ -23,6 +23,8 @@ if [ "$hostn" == "raspberrypi" ]; then
         "b8:27:eb:1e:78:1d") newhost="robo05";;
 
         "b8:27:eb:51:98:80") newhost="robo06";;
+        
+        "b8:27:eb:b0:59:3e") newhost="robo07";;
 
         "b8:27:eb:fb:f0:3d") newhost="robo08";;
 
@@ -30,11 +32,11 @@ if [ "$hostn" == "raspberrypi" ]; then
 
         "b8:27:eb:e7:7b:2c") newhost="robo10";;
 
-        "fe80::9eb6:6ed3:f0e5:aa41") newhost="robo11";;
+        "b8:27:eb:29:ff:58") newhost="robo11";;
 
-        "fe80::a33:6f84:4ace:d8fe") newhost="robo12";;
+        "b8:27:eb:b9:80:b5") newhost="robo12";;
 
-        "fe80::acff:f295:6c72:cc2b") newhost="robo13";;
+        "b8:27:eb:a5:9f:5f") newhost="robo13";;
 
         "b8:27:eb:1a:03:6c") newhost="robo14";;
 
@@ -49,6 +51,17 @@ if [ "$hostn" == "raspberrypi" ]; then
         "b8:27:eb:24:71:d6") newhost="robo19";;
 
         "b8:27:eb:fb:1d:78") newhost="robo20";;
+        
+        "b8:27:eb:0f:71:4a") newhost="robo21";;
+        
+        "b8:27:eb:b9:da:ba") newhost="robo22";;
+        
+        "b8:27:eb:bc:ec:bb") newhost="robo23";;
+        
+        "b8:27:eb:d6:03:d1") newhost="robo24";;
+        
+        "b8:27:eb:51:b2:06") newhost="robo25";;
+
 
         *) echo 0;;
 
