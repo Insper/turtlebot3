@@ -4,15 +4,92 @@ git pull origin master
 sudo apt-get update
 sudo apt autoclean
 
-if [ -f ~/update.txt ]
-then
-    echo "Ja foi atualizado..."
+
+hostn=$(cat /etc/hostname)
+mac=$(cat /sys/class/net/wlp60s0/address)
+
+if [$hostn = "raspiberry"]; then
+
+case $mac in 
+
+b8:27:eb:87:39:ee) newhost = robo01
+;;
+
+b8:27:eb:21:3c:9e) newhost = robo02
+;;
+
+b8:27:eb:f1:86:7b) newhost = robo03
+;;
+
+b8:27:eb:fb:1d:78) newhost = robo04
+;;
+
+b8:27:eb:1e:78:1d) newhost = robo05
+;;
+
+b8:27:eb:51:98:80) newhost = robo06
+;;
+
+
+b8:27:eb:fb:f0:3d) newhost = robo08
+;;
+
+
+b8:27:eb:02:2c:f4) newhost = robo09
+;;
+
+b8:27:eb:e7:7b:2c) newhost = robo10
+;;
+
+fe80::9eb6:6ed3:f0e5:aa41) newhost = robo11
+;;
+
+
+fe80::a33:6f84:4ace:d8fe) newhost = robo12
+;;
+
+fe80::acff:f295:6c72:cc2b) newhost = robo13
+;;
+
+b8:27:eb:1a:03:6c) newhost = robo14
+;;
+
+b8:27:eb:93:d6:9e) newhost = robo15
+;;
+
+b8:27:eb:04:f6:2c) newhost = robo16
+;;
+
+b8:27:eb:e0:af:4b) newhost = robo17
+;;
+
+b8:27:eb:98:6a:20) newhost = robo18
+;;
+
+b8:27:eb:24:71:d6) newhost = robo19
+;;
+
+b8:27:eb:fb:1d:78) newhost = robo20
+;;
+
+*) exit 0
+;;
+
+esac
+
+
+
+sudo sed -i "s/$hostn/$newhost/g" /etc/hosts
+sudo sed -i "s/$hostn/$newhost/g" /etc/hostname
+sudo service hostname down
+sudo service hostname start
+sudo dhclient
+echo "Atualizando o hostname..." >> ~/update.txt
+date >> ~/update.txt
+
 else
-    touch ~/update.txt
-    echo "Atualizando o ajuste da camera..." > ~/update.txt
-    date >> ~/update.txt
-    sed -i '7i\    <param name="hFlip" type="int" value="1" />\' ~/catkin_ws/src/turtlebot3/turtlebot3_bringup/launch/turtlebot3_rpicamera.launch
-    sed -i '8i\    <param name="vFlip" type="int" value="1" />\' ~/catkin_ws/src/turtlebot3/turtlebot3_bringup/launch/turtlebot3_rpicamera.launch 
+
+echo "Ja foi atualizado..."
+exit 0 
 fi
 
-echo "finish update"
