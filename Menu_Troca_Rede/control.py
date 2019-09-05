@@ -95,7 +95,8 @@ draw = ImageDraw.Draw(image)
 names = ['Insper_linux','asimov1', 'asimov2', 'asimov3', 'asimov4', 'asimov5', 'asimov6', 'asimov7', 'asimov8', 'asimov9', 'asimov10', 'asimov11','asimov12']
 
 def menu_up(channel):
-	        
+	#teste para parar de andar 
+        subprocess.check_output(['rostopic','pub','-1','/cmd_ve','geometry_msgs/Twist','--','[0.0,0.0,0.0]','[0.0,0.0,0.0]'])	        
         if menu==10:
 		global flag
                 global Asimov
