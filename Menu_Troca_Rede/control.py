@@ -96,7 +96,7 @@ names = ['Insper_linux','asimov1', 'asimov2', 'asimov3', 'asimov4', 'asimov5', '
 
 def menu_up(channel):
 	#teste para parar de andar 
-        subprocess.check_output(['rostopic','pub','-1','/cmd_ve','geometry_msgs/Twist','--','[0.0,0.0,0.0]','[0.0,0.0,0.0]'])	        
+        os.system("rostopic pub -1 /cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'")        
         if menu==10:
 		global flag
                 global Asimov
