@@ -1,19 +1,20 @@
-# Criando um ROS Packgage em python para o Turtlebot3. 
+# Criando um ROS Package em Python para o Turtlebot3. 
 
 ## Objetivo
 
-Queremos ao final desse tutorial ter uma forma de controlar o angulo da camera nosso robo turtlebot3 atraves do ROS. Mas como faremos isso? Simples! Vamos criar o nosso proprio ROS packgage.
+Queremos ao final desse tutorial ter uma forma de controlar o ângulo da câmera do nosso robô TurtleBot3 através do ROS. Como faremos isso? Simples! Vamos criar o nosso própio ROS package.
 
 
 ## Preparações
 
-Considerando que está sendo utilizado o robo turtlebot3 da materia de robotica, pule para parte Criando o ROS Packgage. 
+Se estiver utilizando o robô TurtleBot3 da matéria de robótica, pule para parte Criando o ROS Package. 
 
-**Caso contrario**, se estiver utilizando outro robo com ROS talvez seja necessario executar os passos abaixo.
+Caso contrário, execute os passos abaixo.
 
-Em um terminal, Execute os comando abaixo:
+Abra um terminal (Crtl+Alt+T) e execute os comando abaixo:
 
-Instalando alguns pacotes e bibliotecas para ter acesso aos pinos (GPIO) da Raspberry do robo. 
+Instalando alguns pacotes e bibliotecas para ter acesso aos pinos (GPIO) da Raspberry do robô.
+ 
 ```bash
   sudo apt update
   sudo apt install python-dev python-pip python-setuptools
@@ -29,18 +30,19 @@ Criando um novo Workspace, caso tenha instalado o ROS e ainda não tenha criado 
 
 ## Criando o ROS Packgage
 
-Agora vamos criar o ROS packgage, o nome será "servo_camera" e as terá 3 dependencias, são elas:
+Agora vamos criar o ROS packgage, o nome será "servo_camera" e terá 3 dependências, são elas:
 
-    rospy = para conectar o python ao ROS
+    rospy = para conectar o Python ao ROS
     std_msgs = Wrappers(invólucro) padrão para os tipos primitivos de mensagem ROS (String, Int, Char, Byte...) 
     python-rpi.gpio = para acessar os pinos(GPIO)
 
 No terminal execute os comandos:
+
 ```
     cd ~/catkin_ws/src
     catkin_create_pkg servo_camera rospy std_msgs -s python-rpi.gpio
 ```
-Pronto! se não ocorreu nenhum problema, o packgage foi criado sucesso e isso pode ser observado no terminial:
+Pronto! Package criado com sucesso, no terminal vamos observar:
 
 ```
     insper@robo:~/catkin_ws/src$ catkin_create_pkg servo_camera rospy std_msgs -s python-rpi.gpio
@@ -51,9 +53,9 @@ Pronto! se não ocorreu nenhum problema, o packgage foi criado sucesso e isso po
 ```
 ## Escrevendo o ROS node
 
-A camera do nosso robo esta conecta em um servo motor, logo, temos que desenvolver um script Python que recebe comandos publicados em ROS e converte isso em um sinal PWM que determina a posição do servo motor.
+A câmera do nosso robo está conecta em um servo motor, logo, temos que escrever um Script Python que recebe comandos publicados em ROS e converte em um sinal PWM que determina a posição do servo motor.
 
-No terminal, crie dentro da pasta /src um novo arquivo Python execultavel:
+No terminal, crie dentro da pasta /src um novo arquivo Python executável:
 
 ```
     cd servo_camera/src/
@@ -61,18 +63,18 @@ No terminal, crie dentro da pasta /src um novo arquivo Python execultavel:
     chmod a+x driver_node
 ```
 
-Abra o script Python com um editor da sua preferencia:
+Abra o script Python com o editor da sua preferência:
 
-```
+```bash
     nano driver_node
 ```
 
-Cole o codigo abaixo, salve e feche:
+Cole o código abaixo:
 
 ```python
 #!/usr/bin/env python
 
-# Importa as bibliotecas do ros e do python
+# Importa as bibliotecas do ROS e do Python
 import rospy
 from std_msgs.msg import String, UInt8
 
@@ -86,22 +88,19 @@ GPIO.setwarnings(False)
 # Seta o GPIO do servo motor
 pinMotorAForwards = 18
 
-# Seta a Frequencia
+# Seta a frequencia
 Frequency = 50
 # Seta o DutyCycle
-DutyCycle = 9
+DutyCycle = 8
 DutyCycle2 =5
 # Para o servo motor
 Stop = 0
 
-
 # Seta o pino do servo motor como saida
 GPIO.setup(pinMotorAForwards, GPIO.OUT)
 
-
 # Ajusta a frequencia do PWM
 pwmMotor = GPIO.PWM(pinMotorAForwards, Frequency)
-
 
 # Inicializa o PWM (servo parado)
 pwmMotor.start(Stop)
@@ -121,6 +120,7 @@ def DesceCamera():
 # Funcao posicao
 def PosCamera(command):
     pwmMotor.ChangeDutyCycle(command)
+
 # Funcao Callback (le o comando recebido)
 def CommandCallback(commandMessage):
     command = commandMessage.data
@@ -158,21 +158,19 @@ rospy.spin()
 print('Shutting down: stopping motors')
 StopMotor()
 ```
-***descrever o que o codigo faz....***
 
+Salve e feche o arquivo.
 
-Etapa concluida, vamos em frente.
+## Compilando o Workspace com o nosso package:
 
-## Compilando o Workspace com o nosso packgage:
-
-Para finalizar a criação do nosso packgage temos que compilar o Workspace onde ele foi criado, vale lembrar que deve ser compilado na raiz do Workspace. No terminal execute:
+Para finalizar a criação do nosso package, vamos compilar o Workspace no /catkin_ws, vale resaltar que deve ser compilado na raiz do Workspace. No terminal execute:
 
 ```
     cd ~/catkin_ws
     catkin_make
 ```
 
-Terminado! Se não ocorreu nenhum problema, a compilação chegou em 100%. O terminal irá indicar algo parecido: 
+Se a compilação chegou em 100%, tudo ocorreu corretamente. O terminal irá indicar algo parecido: 
 
 ```bash
 insper@robo:~/catkin_ws $ catkin_make
@@ -238,7 +236,7 @@ Install space: /home/pi/catkin_ws/install
 [100%] Built target turtlebot3_diagnostics
 ```
 
-Parabéns! criamos nosso ROS packgage em Python que controla o angulo da camera atraves do servo motor. 
+Parabéns! Criamos nosso ROS packgage em Python que controla o ângulo da câmera do nosso robô TurtleBot3. 
 
 ## Executando
 
@@ -248,31 +246,35 @@ Para utilizar temos que rodar o node criado, no terminal do robo:
     rosrun servo_camera driver_node
 ```
 
-Do PC remoto (PC que se conecta ao robo), podemos visualizar os dois topicos com o comando, execute:
-
-Terminal novo (Crtl+Alt+T):
+Do PC remoto (PC que se conecta ao robô), podemos visualizar os 2 tópicos, execute no terminal:
 
 ```
     Roscore
 ```
+
 Abra um novo terminal, não cancele a operação do primeiro terminal, rode:
 
 ```
     rostopic list
 ```
-temos 2 topicos:
+
+Dentre os topicos listados, temos os 2 topicos que criamos:
+
 ```
     /servo_camera/command
     /servo_camera/position
 ```
 
-para mandar um comando, abra um novo terminal e rode:
+Para publicar um comando rode:
 
 ```
     rostopic pub -1 servo_camera/command std_msgs/String "sobe"
     rostopic pub -1 servo_camera/command std_msgs/String "desce"
+```
     
-    ou 
-    
+ou 
+
+```    
     rostopic pub -1 servo_camera/position std_msgs/UInt8 6
 ```
+*** Observacao *** Existe uma limitação física na montagem da camera que restringe a variação do ângulo da câmera entre os valores 4 e 11.
