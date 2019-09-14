@@ -266,8 +266,13 @@ temos 2 topicos:
     /servo_camera/position
 ```
 
-para mandar um 
-rostopic pub -1 servo_cameosition std_msgs/UInt8 6
+para mandar um comando, abra um novo terminal e rode:
 
-
-
+```
+    rostopic pub -1 servo_camera/command std_msgs/String "sobe"
+    rostopic pub -1 servo_camera/command std_msgs/String "desce"
+    
+    ou 
+    
+    rostopic pub -1 servo_camera/position std_msgs/UInt8 6
+```
