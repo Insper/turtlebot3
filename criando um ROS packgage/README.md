@@ -120,7 +120,7 @@ def DesceCamera():
 
 # Funcao posicao
 def PosCamera(command):
-
+    pwmMotor.ChangeDutyCycle(command)
 # Funcao Callback (le o comando recebido)
 def CommandCallback(commandMessage):
     command = commandMessage.data
