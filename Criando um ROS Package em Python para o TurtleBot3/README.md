@@ -278,3 +278,10 @@ ou
     rostopic pub -1 servo_camera/position std_msgs/UInt8 6
 ```
 *** Observacao *** Existe uma limitação física na montagem da camera que restringe a variação do ângulo da câmera entre os valores 4 e 11.
+
+## Ligação do Servo Motor na Raspberry Py 
+
+A ligação do servo motor é bem simples e pode ser vista na imagem abaixo:
+
+![](img.jpeg )
+
