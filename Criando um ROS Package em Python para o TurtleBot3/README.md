@@ -76,7 +76,7 @@ Cole o código abaixo:
 
 # Importa as bibliotecas do ROS e do Python
 import rospy
-from std_msgs.msg import String, UInt8
+from std_msgs.msg import String, Float32
 
 import RPi.GPIO as GPIO
 import time as time
@@ -151,7 +151,7 @@ def CommandCallback(commandMessage):
 # Incia o node 
 rospy.init_node('driver')
 
-rospy.Subscriber('servo_camera/position', UInt8, CommandCallback)
+rospy.Subscriber('servo_camera/position', Float32, CommandCallback)
 rospy.Subscriber('servo_camera/command', String, CommandCallback)
 
 rospy.spin()
@@ -275,7 +275,7 @@ Para publicar um comando rode:
 ou 
 
 ```    
-    rostopic pub -1 servo_camera/position std_msgs/UInt8 6
+    rostopic pub -1 servo_camera/position std_msgs/Float32 6
 ```
 *** Observacao *** Existe uma limitação física na montagem da camera que restringe a variação do ângulo da câmera entre os valores 4 e 11.
 
