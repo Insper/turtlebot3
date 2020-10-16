@@ -2,7 +2,7 @@
 
 # Importa as bibliotecas do ROS e do Python
 import rospy
-from std_msgs.msg import String, Float32
+from std_msgs.msg import String, Float64
 
 import RPi.GPIO as GPIO
 import time as time
@@ -65,7 +65,9 @@ def RecolheBraco():
 
 # Funcao posicao Braco
 def PosBraco(command):
-    pwmMotorBraco.ChangeDutyCycle(command)
+    # converte o valor recebido em radianos para entrada do PWM
+    commandBraco = 5 + (2*command) + (0,889 * command**2)
+    pwmMotorBraco.ChangeDutyCycle(commandBraco)
 
 
 
@@ -79,26 +81,28 @@ def FechaGarra():
 
 # Funcao posicao Garra
 def PosGarra(command):
-    pwmMotorGarra.ChangeDutyCycle(command)
+    # converte o valor recebido em radianos para entrada do PWM
+    commandGarra= (-8*command) + 5
+    pwmMotorGarra.ChangeDutyCycle(commandGarra)
 
 # Funcao Callback (le o comando recebido para a posicao da Garra)
 def CommandCallback(commandMessage):
     command = commandMessage.data
-    if command == 'abre':
+    if command == 'data: -1':
         print('abre a garra ')
         AbreGarra()
         time.sleep(0.5)
         StopMotor()
         time.sleep(0.5)
 
-    elif command == 'fecha':
+    elif command == 'data: 0':
         print('fecha a garra')
         FechaGarra()
         time.sleep(0.5)
         StopMotor()
         time.sleep(0.5)
 
-    elif command == 'stop':
+    elif command == 'data: stop':
         print('Parando')
         StopMotor()
     else:
@@ -111,28 +115,28 @@ def CommandCallback(commandMessage):
 # Funcao Callback1 (le o comando recebido para possicao da Braco)
 def CommandCallback1(commandMessage):
     command = commandMessage.data
-    if command == 'sobe':
+    if command == 'data: 1.5':
         print('sobe o Braco')
         SobeBraco()
         time.sleep(0.5)
         StopMotor()
         time.sleep(0.5)
 
-    elif command == 'desce':
-        print('Desce o Braco')
+    elif command == 'data: 0':
+        print('Braco em posição')
         DesceBraco()
         time.sleep(0.5)
         StopMotor()
         time.sleep(0.5)
 
-    elif command == 'recolhe':
+    elif command == 'data: -1.5':
         print('Recolhe o Braco')
         RecolheBraco()
         time.sleep(0.5)
         StopMotor()
         time.sleep(0.5)
 
-    elif command == 'stop':
+    elif command == 'data: stop':
         print('Parando')
         StopMotor()
     else:
@@ -148,10 +152,13 @@ def CommandCallback1(commandMessage):
 # Incia o node 
 rospy.init_node('driver')
 
-rospy.Subscriber('servo_garra/command', String, CommandCallback)
-rospy.Subscriber('servo_garra/position', Float32, CommandCallback)
-rospy.Subscriber('servo_braco/command', String, CommandCallback1)
-rospy.Subscriber('servo_braco/position', Float32, CommandCallback1)
+# joint1 = junta do braço
+# joint2 = junta da garra
+ 
+#rospy.Subscriber('servo_garra/command', String, CommandCallback)
+rospy.Subscriber('/joint2_position_controller/command', Float64, CommandCallback)
+#rospy.Subscriber('servo_braco/command', String, CommandCallback1)
+rospy.Subscriber('/joint1_position_controller/command', Float64, CommandCallback1)
 
 rospy.spin()
 print('Shutting down: stopping motors')
